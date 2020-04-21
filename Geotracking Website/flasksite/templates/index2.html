@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Index Page</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<style>
+html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
+
+
+.mySlides {display:none}
+.w3-tag, .fa {cursor:pointer}
+.w3-tag {height:15px;width:15px;padding:0;margin-top:6px}
+
+.center {
+  text-align: center;
+  border: black;
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">Flask Website</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('main.index') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.share') }}">Share</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+              <div class="btn-group dropright">
+  <button type="button" class="btn dropdown-toggle bg-steel nav-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Bike Functionalities
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for('map.displaymap') }}">Track Bikes</a>
+    <a class="dropdown-item" href="{{ url_for('map.nearest_bike') }}">Find Nearest Bike</a>
+    <a class="dropdown-item" href="{{ url_for('main.runaway') }}">SOS! Bike Runaway</a>
+  </div>
+</div>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+<!-- Content -->
+<div class="w3-content" style="max-width:1150px;margin-top:80px;margin-bottom:80px">
+
+  <div class="w3-panel">
+    <h1 class ="text-center"><b>Bike Tracking</b></h1>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="w3-container">
+    <div class="w3-display-container mySlides">
+      <img src="static/connectivity.jpg" style="width:100%">
+      <div class="w3-display-topleft w3-container w3-padding-32">
+        <span class="w3-white w3-padding-large w3-animate-bottom">Easy GPS System</span>
+      </div>
+    </div>
+    <div class="w3-display-container mySlides">
+      <img src="static/gpslogo.jpg" style="width:100%">
+      <div class="w3-display-middle w3-container w3-padding-32">
+        <span class="w3-white w3-padding-large w3-animate-bottom">Reliable Data</span>
+      </div>
+    </div>
+    <div class="w3-display-container mySlides">
+      <img src="static/bicycle.png" style="width:100%">
+      <div class="w3-display-topright w3-container w3-padding-32">
+        <span class="w3-white w3-padding-large w3-animate-bottom">For Your Needs</span>
+      </div>
+    </div>
+
+    <!-- Slideshow next/previous buttons -->
+    <div class="w3-container w3-dark-grey w3-padding w3-xlarge">
+      <div class="w3-left" onclick="plusDivs(-1)"><i class="fa fa-arrow-circle-left w3-hover-text-teal"></i></div>
+      <div class="w3-right" onclick="plusDivs(1)"><i class="fa fa-arrow-circle-right w3-hover-text-teal"></i></div>
+
+      <div class="w3-center">
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
+      </div>
+    </div>
+  </div>
+
+
+          <div class="w3-row w3-container">
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-bottombar w3-border-dark-grey w3-padding-16">Bike Functionalities On The Site</span>
+    </div>
+    <div class="w3-col l3 m6 w3-light-grey w3-container w3-padding-16">
+      <h3>Bike Tracking</h3>
+      <p>Bike Tracking is the easiest way to find out where the rental bikes currently are located. These use State of the Art Technology to precisely pinpoint location </p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-grey w3-container w3-padding-16">
+      <h3>Statistics</h3>
+      <p> Data is important - With These Statistics it is breathtakingly simple to improve the service with the correct information. Presented in an easy readable manner   </p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-dark-grey w3-container w3-padding-16">
+      <h3> <font color="white">SOS! Bike Runaway</font></h3>
+      <p>>Anti-Theft made automous! This System will send our SOS Signals if the bike has gone astray, moved to far from deployed city or if it's been stolen! </p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-black w3-container w3-padding-16">
+      <h3><font color="white">Find Nearest Bike</font></h3>
+      <p>Looking for the nearest avaiable bike? Look no further, simply just tell the smart app where you are, and it will tell you where you can finest the nearest bike!  </p>
+    </div>
+
+
+
+  <!-- Grid -->
+  <div class="w3-row w3-container">
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-bottombar w3-border-dark-grey w3-padding-16">What We Offer</span>
+    </div>
+    <div class="w3-col l3 m6 w3-light-grey w3-container w3-padding-16">
+      <h3>Design</h3>
+      <p>Choices made specifially to enhance your Experience!                                          </p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-grey w3-container w3-padding-16">
+      <h3>Reliablity</h3>
+      <p>Always Online - Always Reliable - Always There For YOU!                                      </p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-dark-grey w3-container w3-padding-16">
+      <h3>Consultation</h3>
+      <p>Well Informed, Positive Staff Ready To Help With Any Problem</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-black w3-container w3-padding-16">
+      <h3>Promises</h3>
+      <p>A Better Tomorrow For Me And You! Sign Up Today!</p>
+    </div>
+  </div>
+</div>
+
+  <br>
+
+  <br>
+    <div class="container-fluid">
+  <h1 class="text-center">More About Our Values</h1>
+
+  <br>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6 bg-primary text-white">
+          <h2>Tradigy Of Darth Plagueis</h2>
+        Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It’s not a story the Jedi would tell you. It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith,
+          so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying.
+          The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power,
+          which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself.
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6 bg-primary text-white">
+
+          <div class="container">
+            <h2>Group 6 Certified</h2>
+                <img src="static/harambe.jpg" class="img-thumbnail" alt="Cinque Terre" width="204" height="66">
+            </div>
+        Hi. I'm Harambe, and this is my Zoo. I live here with my old zookeeper and banana, Big Yellow. Everything in here has a heart and a mind.
+          One thing I've learned after 17 years - you never know WHAT is gonna come over that enclosure.
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  </div>
+
+<!-- Footer -->
+<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark">
+
+  <div style="background-color: #6351ce;">
+    <div class="container">
+        <div class="center">
+  <a href="#" class="w3-button w3-black w3-margin"><i class="fa fa-arrow-up w3-margin-left"></i>To the top</a>
+        </div>
+        <div class="center">
+  <div class="w3-xlarge w3-section">
+    <a href="http://www.facebook.com"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
+    <a href="http://www.instagram.com"><i class="fa fa-instagram w3-hover-opacity"></i></a>
+    <a href="http://www.snapchat.com"><i class="fa fa-snapchat w3-hover-opacity"></i></a>
+    <a href="http://www.pinterest.com"><i class="fa fa-pinterest-p w3-hover-opacity"></i></a>
+    <a href="http://www.twitter.com"><i class="fa fa-twitter w3-hover-opacity"></i></a>
+    <a href="http://www.linkedin.com"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
+  </div>
+</div>
+    </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left mt-5">
+
+    <!-- Grid row -->
+    <div class="row mt-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+
+        <!-- Content -->
+        <h6 class="text-uppercase font-weight-bold">Group 6</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>Group 6 Wishes you a happy browsing experience on this groundbreaking Website. Do not be afriad to contact
+        us or send business inquiries.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Products</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <a href="{{ url_for('map.displaymap') }}">Bike Tracker - Track A Bike</a>
+        </p>
+        <p>
+          <a href="{{ url_for('map.nearest_bike') }}">Find Nearest Bike</a>
+        </p>
+        <p>
+          <a href="{{ url_for('main.runaway') }}">SOS - Runaway Bikes</a>
+        </p>
+        <p>
+          <a href="{{ url_for('Webstatistics.mainstatistics') }}">Statistics About Bikes</a>
+        </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <a href="{{ url_for('users.account') }}">Your Account</a>
+        </p>
+        <p>
+          <a href="{{ url_for('users.register') }}">Register An Account</a>
+        </p>
+        <p>
+          <a href="{{ url_for('posts.new_post') }}">Share Your Experience</a>
+        </p>
+        <p>
+          <a href="{{ url_for('main.adminTeam') }}">Contact Developer/Admin Team</a>
+        </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Contact</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <i class="fas fa-home mr-3"></i> Sønderhøj 30. 8260 Viby J - Denmark</p>
+        <p>
+          <i class="fas fa-envelope mr-3"></i> group.si6x@gmail.com </p>
+        <p>
+          <i class="fas fa-phone mr-3"></i><a href ="{{url_for('main.adminTeam') }}"> Meet the Team </a>  </p>
+
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+</footer>
+<!-- Footer -->
+
+
+<script>
+// Slideshow
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demodots");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" w3-white", "");
+  }
+  x[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " w3-white";
+}
+</script>
+
+</body>
+</html>

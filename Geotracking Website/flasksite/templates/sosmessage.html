@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  grid-area: header;
+  background-color: #ffffff;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+}
+
+/* The grid container */
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header header header header header'
+    'left middle middle middle middle right'
+    'footer footer footer footer footer footer';
+  /* grid-column-gap: 10px; - if you want gap between the columns */
+}
+
+
+
+/* Style the left column */
+.left {
+  grid-area: left;
+}
+
+/* Style the middle column */
+.middle {
+ padding: 30px;
+  grid-area: middle;
+}
+
+/* Style the right column */
+.right {
+  grid-area: right;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .grid-container  {
+    grid-template-areas:
+      'header header header header header header'
+      'left left left left left left'
+      'middle middle middle middle middle middle'
+      'right right right right right right'
+
+  }
+}
+</style>
+
+
+<div class="grid-container">
+  <div class="header">
+    <h1>How does a SOS Message look like?</h1>
+  </div>
+
+  <div class="left" style="background-color:#ffffff;"></div>
+  <div class="middle" style="background-color:#ffffff;">
+
+An SOS Message can look a bit differant depending on what mail service you utilize - However some of the key elements will always be the same. Such as The address it's sent from.
+
+"bikewebnoreply@gmail.com" is the Websites publisher of emails. If you can't find the email that you're meant to get from this site, please check your spam filters and check if your own email address is the correct one that's logged in!.
+
+      <br>
+        <br>
+        <br>
+<div class="container-fluid">
+    <div class="row">
+<div class="col-sm-6 col-md-6 col-lg-6 text-dark">
+
+
+          <div class="container">
+
+                <img src="static/harambe.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="66">
+
+
+      </div>
+      </div>
+    <div class="col-sm-6 col-md-6 col-lg-6 text-dark">
+                <div class="container">
+
+                <img src="static/harambe.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="66">
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+
+
+<!-- Header -->
+<header class="w3-container w3-white w3-center" style="padding:108px 16px">
+  <h1 class="w3-margin w3-jumbo">SOS! - BIKE ALERT</h1>
+  <p class="w3-xlarge"> Get Started With SOS - Bike Alert. Perhaps give it a test? See how many times the SOS Bike Alert has saved a stray bike? Or Would you like to see the
+  SOS message so you know what to be prepared for?</p>
+     <a href="{{ url_for('main.testsos') }}" button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Test SOS!</a></button>
+    <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">SOS - Statistics</button>
+
+</header>
+
+
+
+
+  <div class="right" style="background-color:#ffffff;"></div>
+</div>
+</div>
+{% endblock content %}

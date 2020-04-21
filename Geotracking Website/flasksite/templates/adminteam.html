@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Devloper/Admin Team</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <style>
+  .fakeimg {
+    height: 350px;
+    background: #aaa;
+  }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">Flask Website</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('main.index') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.share') }}">Share</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+              <div class="btn-group dropright">
+  <button type="button" class="btn dropdown-toggle bg-steel nav-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Bike Functionalities
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for('map.displaymap') }}">Track Bikes</a>
+    <a class="dropdown-item" href="{{ url_for('map.nearest_bike') }}">Find Nearest Bike</a>
+    <a class="dropdown-item" href="{{ url_for('main.runaway') }}">SOS! Bike Runaway</a>
+  </div>
+</div>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <h1>Admin/Developer Team</h1>
+  <p>For Business Inquiries Please Read The Following Page</p>
+</div>
+
+<div class="container" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>About The Team</h2>
+      <h5>Photo Of The Team:</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>From Left: Name 1 - Name 2 - Name 3 - Name 4. (Perhaps with titles?)</p>
+      <h3>Linked In & Business Emails</h3>
+      <p>Please Inquire About Business/Developing Solutions </p>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+      <h2>Team Members - Name One</h2>
+      <h5>Name One, November 27, 2019</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>Title Of Name One</p>
+      <p>Focus Area - Experterise - All Positive Quirks and Perks And Traits</p>
+      <br>
+      <h2>Team Member - Name Two</h2>
+      <h5>Name One, November 27, 2019</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>Title Of Name One</p>
+      <p>Focus Area - Experterise - All Positive Quirks and Perks And Traits</p>
+      <br>
+            <h2>Team Members</h2>
+      <h5>Name One, November 27, 2019</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>Title Of Name One</p>
+      <p>Focus Area - Experterise - All Positive Quirks and Perks And Traits</p>
+      <br>
+            <h2>Team Members</h2>
+      <h5>Name One, November 27, 2019</h5>
+      <div class="fakeimg">Fake Image</div>
+      <p>Title Of Name One</p>
+      <p>Focus Area - Experterise - All Positive Quirks and Perks And Traits</p>
+      <br>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <h1 class="text-center"> Group 6 - IoT Solutions </h1>
+  <h3>Your IoT Dream - Made Real</h3>
+</div>
+
+</body>
+</html>

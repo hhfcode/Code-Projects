@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+.fa-anchor,.fa-coffee {font-size:200px}
+</style>
+
+
+<div style = "background-color:rgb(237,237,255);">
+    <div class="container-fluid">
+  <h1 class="text-center">More About SOS! - Runaway Bike!</h1>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-lg-4 text-black">
+          <h2>How it Works</h2>
+        SOS! - Runaway Bike! Is one of the groundbreaking algorhytms that is provided alongside the GPS Tracker.
+        This Functionality checks the incoming coordinates that is being put into the system. If these coordinates
+          does not correspond to the City of Århus - Then an SOS Will trigger - This SOS will be sent out by Email to
+          the designated safety person. This System can be upgraded to send out Text Messages, Alert Authorities, Contract The Military and so on.
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4 text-black">
+
+          <div class="container">
+            <h2>Groundbreaking Algorhytm</h2>
+                <img src="static/harambe.jpg" class="img-thumbnail" alt="Cinque Terre" width="204" height="66">
+            </div>
+        The Pass Zone in this picture show the area in which the Bikes all have free reign and does not trigger an SOS Alert.
+          The SOS Zone in this picture show the area in which the Bikes all trigger an SOS Alert if their signal is being broadcasted at those locations.
+          </div>
+              <div class="col-sm-4 col-md-4 col-lg-4 text-black">
+
+          <div class="container">
+            <h2>Easily Expandable</h2>
+                <img src="static/harambe.jpg" class="img-thumbnail" alt="Cinque Terre" width="204" height="66">
+            </div>
+        With Technology like SOS! - Runaway Bike! It's easy to expand to any city or Country that is desired. Simply just contract the
+                  admin team to get your city securely locked in our algorhytm.
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<!-- Header -->
+<header class="w3-container w3-white w3-center" style="padding:108px 16px">
+  <h1 class="w3-margin w3-jumbo">SOS! - BIKE ALERT</h1>
+  <p class="w3-xlarge"> Get Started With SOS - Bike Alert. Perhaps give it a test? See how many times the SOS Bike Alert has saved a stray bike? Or Would you like to see the
+  SOS message so you know what to be prepared for?</p>
+    <a href="{{ url_for('main.testsos') }}" button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Test SOS!</a></button>
+    <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">SOS - Statistics</button>
+    <a href="{{ url_for('main.sosmessage') }}" button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">SOS Messages</a></button>
+</header>
+
+{% endblock content %}

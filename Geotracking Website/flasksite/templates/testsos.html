@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+.header {
+  padding: 15px;
+  text-align: center;
+  background:#2657a6;
+  color: white;
+  font-size: 30px;
+  width: 100%px; height: 125px;
+}
+</style>
+
+<div class="header">
+  <h1 style="color: yellow">Test The SoS Email</h1>
+  <p>Simply Input your Email to test the SoS Message </p>
+</div>
+<br>
+<br>
+
+<div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Test SoS Message</legend>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+</div>
+
+<br>
+
+<!-- Header -->
+<header class="w3-container w3-white w3-center" style="padding:108px 16px">
+  <h1 class="w3-margin w3-jumbo">SOS! - BIKE ALERT</h1>
+  <p class="w3-xlarge"> Get Started With SOS - Bike Alert. Perhaps give it a test? See how many times the SOS Bike Alert has saved a stray bike? Or Would you like to see the
+  SOS message so you know what to be prepared for?</p>
+     <a href="{{ url_for('main.sosmessage') }}" button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">SoS Messages!</a></button>
+    <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">SOS - Statistics</button>
+
+</header>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

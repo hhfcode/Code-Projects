@@ -1,0 +1,358 @@
+from flask import Flask, render_template, session
+from gpiozero import *
+import datetime
+import pigpio
+import asyncio
+from time import *
+import time
+import threading
+import multitasking
+import signal
+app = Flask(__name__)
+led1 = LED(27)
+ledM = LED(22)
+ledM2 = LED(10)
+
+IRsens1 = LineSensor(14)
+IRsens2 = LineSensor(15)
+
+servoPIN = 17
+servoPIN2 = 18
+pi = pigpio.pi()
+reqtime = 9999999999
+LineSensorMode = False
+SumoMode = False
+signal.signal(signal.SIGINT, multitasking.killall)
+
+#speed = 0
+#pi.set_mode(servoPIN, pigpio.OUTPUT)
+#pi.set_mode(servoPIN2, pigpio.OUTPUT)
+#pi.set_PWM_range(servoPIN, 100)
+#pi.set_PWM_frequency(servoPIN,50)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(servoPIN, GPIO.OUT)
+#GPIO.setup(servoPIN2, GPIO.OUT)
+#app.secret_key = b'beepboopbop'
+
+#p = GPIO.PWM(servoPIN, 1000) # GPIO 17 for PWM with 50Hz
+#p2 = GPIO.PWM(servoPIN2, 1000) # GPIO 17 for PWM with 50Hz
+#p.start(0) # Initialization
+#p2.start(0)
+#p.ChangeDutyCycle(0)
+#p2.ChangeDutyCycle(0)
+
+def failsafe():
+	global reqtime
+	currenttime = time.time()
+	while currenttime - reqtime > 2:
+		print("2 SECONDS PASSED WITH NO INPUT, STOPPING MOTORS.")
+		stopmove()
+		reqtime = 9999999999999
+
+def run_check():
+	global reqtime
+	threading.Timer(1.0, run_check).start()
+	print("fail safe tick...")
+	failsafe()
+
+def slowforwardmove():
+	pi.set_servo_pulsewidth(servoPIN, 1400)
+	pi.set_servo_pulsewidth(servoPIN2, 1600)
+
+def forwardmove():
+    pi.set_servo_pulsewidth(servoPIN, 1000)
+    pi.set_servo_pulsewidth(servoPIN2, 2000)
+
+def slowreversemove():
+    pi.set_servo_pulsewidth(servoPIN, 1600)
+    pi.set_servo_pulsewidth(servoPIN2, 1400)
+
+def reversemove():
+    pi.set_servo_pulsewidth(servoPIN, 2000)
+    pi.set_servo_pulsewidth(servoPIN2, 1000)
+
+def stopmove():
+	pi.set_servo_pulsewidth(servoPIN, 1500)
+	pi.set_servo_pulsewidth(servoPIN2, 1500)
+
+def sharpleftmove():
+	pi.set_servo_pulsewidth(servoPIN, 1300)
+	#pi.set_servo_pulsewidth(servoPIN2, 1200)	
+
+def slowleftmove():
+	pi.set_servo_pulsewidth(servoPIN, 1400)
+	pi.set_servo_pulsewidth(servoPIN2, 1500)
+
+def leftmove():
+	pi.set_servo_pulsewidth(servoPIN, 1300)
+	pi.set_servo_pulsewidth(servoPIN2, 1600)
+
+def rightmove():
+	pi.set_servo_pulsewidth(servoPIN, 1300)
+	pi.set_servo_pulsewidth(servoPIN2, 2000)
+
+def sharprightmove():
+	#pi.set_servo_pulsewidth(servoPIN, 1600)
+	pi.set_servo_pulsewidth(servoPIN2, 1600)
+
+def slowrightmove():	
+	pi.set_servo_pulsewidth(servoPIN, 1500)
+	pi.set_servo_pulsewidth(servoPIN2, 1600)
+
+
+@app.route('/')
+def json():
+    return render_template('json.html')
+
+#background process happening without any refreshing
+
+@app.route('/background_process_test')
+def background_process_test():
+	led1.on()
+	print ("on")
+	return ("nothing")
+
+@app.route('/manualLEDon')
+def manualLEDon():
+	ledM.on()
+	print ("manual led on")
+	return("nothing")
+
+
+@app.route('/manualLEDoff')
+def manualLEDoff():
+	ledM.off()
+	print ("manual led off")
+	return("nothing")		
+
+@app.route('/ledoff')
+def ledoff():
+	led1.off()
+	print ("off")
+	return("nothing")
+
+
+@app.route('/lineSensorON')
+def lineSensorON():
+	global LineSensorMode
+	print ("Activated line sensor mode")
+	LineSensorMode = True	
+	print("Status")
+	print(LineSensorMode)
+	LineMode()
+	return("nothing")
+	
+
+@app.route('/lineSensorOFF')
+def lineSensorOFF():
+	global LineSensorMode
+	print ("De-activated line sensor mode")
+	LineSensorMode = False
+	stopmove()
+	LineMode()
+	return("nothing")
+
+
+
+@app.route('/SumoModeON')
+def SumoModeON():
+	global Sumobattle
+	print ("Activated sumo mode")
+	Sumobattle = True	
+	ledM2.on()
+	SumoMode()
+	return("nothing")
+	
+
+@app.route('/SumoModeOFF')
+def SumoModeOFF():
+	global Sumobattle
+	print ("De-activated sumo mode")
+	Sumobattle = False
+	ledM2.off()
+	stopmove()
+	SumoMode()
+	return("nothing")			
+	
+
+@app.route('/forward')
+def forward():
+	print("forward")
+	moving = 1
+	if moving > 0:
+		forwardmove()
+	return("nothing")
+
+
+@app.route('/reversecar')
+def reversecar():
+	print("back")
+	slowreversemove()
+	return("nothing")
+
+@app.route('/sharpleft')
+def sharpleft():
+	print("sharpleft")
+	sharpleftmove()
+	return("nothing")
+
+@app.route('/sharpright')
+def sharpright():
+	print("sharpright")
+	sharprightmove()
+	return("nothing")
+
+
+@app.route('/leftmove')
+def left():
+	print("left")
+	leftmove()
+	return("nothing")
+
+
+@app.route('/rightmove')
+def right():
+	print("right")
+	rightmove()
+	return("nothing")
+
+
+
+@app.route('/stopcar')
+def stopcar():
+    print("stopcar")
+    moving = 0
+    stopmove()
+    return("nothing")
+
+
+
+## starts a failswitch counter:
+
+@app.after_request
+def after_request(response):
+	global reqtime
+	print("RECIEVED A REQUEST")
+	reqtime = time.time()
+	print(reqtime)
+
+	return response
+
+
+
+
+run_check()
+
+
+
+def GetLineStatus():
+	global LineSensorMode
+	return LineSensorMode
+
+
+# LINE FOLLOW
+
+Rline = False
+Lline = False
+
+def Rdetect():
+	global Rline
+	print("Right line detected")
+	Rline = True
+
+def Rnodetect():
+	global Rline
+	print("No line")
+	Rline = False
+
+def Ldetect():
+	global Lline
+	print("Left line detected")
+	Lline = True
+
+def Lnodetect():
+	global Lline
+	print("No line")
+	Lline = False
+
+@multitasking.task
+def LineMode():
+	while LineSensorMode == True:
+		global Rline, Lline
+
+		IRsens1.when_line = Rdetect
+		IRsens1.when_no_line = Rnodetect
+
+		IRsens2.when_line = Ldetect
+		IRsens2.when_no_line = Lnodetect
+
+
+		if Rline == False and Lline == False:
+			slowforwardmove()
+			print("---FORWARD1")
+
+		elif Rline == False and Lline == True:
+			slowrightmove()
+			print("---RIGHT")			
+
+		elif Rline == True and Lline == False:
+			slowleftmove()
+			print("---LEFT")
+
+		elif Rline == True and Lline == True:
+			slowforwardmove()
+			print("---FORWARD2")
+		
+		print(Rline, Lline)
+		sleep(0.01)
+
+
+
+
+
+## Sumo / ball push
+@multitasking.task
+def SumoMode():
+	distanceSensor = DistanceSensor(echo=19,trigger=26)
+	while Sumobattle == True:
+		for variable in range(1,20):
+			global Rline, Lline
+			IRsens1.when_line = Rdetect
+			IRsens1.when_no_line = Rnodetect
+
+			IRsens2.when_line = Ldetect
+			IRsens2.when_no_line = Lnodetect
+			sensorvalue = distanceSensor.distance * 100
+			print(sensorvalue)
+			print("Line sensors:")
+			print(Rline,Lline)
+			sleep(0.1)
+			if sensorvalue <= 99 and sensorvalue >= 1: ##Detect something
+				slowforwardmove()
+
+			if sensorvalue == 100: ##Detect nothing
+				stopmove()
+				#sleep(0.1)
+				#slowrightmove()
+
+			if Rline == False and Lline == False:
+				slowreversemove()
+				sleep(1.5)
+				stopmove()
+				sleep(0.1)
+				sharprightmove()
+				sleep(0.8)
+				slowforwardmove()
+				sleep(1)
+
+
+
+
+
+if __name__ == "__main__":
+	app.run(host='0.0.0.0', port=5020, debug=False)
+	p = multiprocessing.Process(target=LineMode)
+	p.start()
+
+	s = multiprocessing.Process(target=SumoMode)
+	s.start()

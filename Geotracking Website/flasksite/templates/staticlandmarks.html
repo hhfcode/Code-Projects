@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width:100%;
+}
+
+.header {
+  padding: 15px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+  width: 100%px; height: 125px;
+}
+</style>
+  <title>Google Maps Multiple Markers</title>
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyDwjHjhwNFRhorsXmP-E8vQTm2aqn04Lp0&callback=initMap"
+          type="text/javascript"></script>
+
+<div class="header">
+  <h1>Track A Bike</h1>
+  <p>Anywhere - Anytime</p>
+  <p>Included A Few Static Locations</p>
+</div>
+<br>
+
+  <div id="map" style="width: 100%; height: 600px;"></div>
+
+  <script type="text/javascript">
+
+
+
+
+var timerID = setInterval(function() {
+// My code here
+}, 3 * 1000);
+
+    var locations = [
+      ['Tivoli Friheden', {{statlat2}}, {{statlon2}}, 4],
+      ['Totally Not Henriks House',{{statlat3}}, {{statlon3}}, 5],
+      ['Bilka Tilst', {{statlat4}}, {{statlon4}}, 3],
+      ['Somewhere In Risskov', {{statlat5}},{{statlon5}}, 2],
+      ['Seen at {{timestamp}}', {{latitude}}, {{longitude}}, 1]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: new google.maps.LatLng(56.161149, 10.169486),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+
+
+</script>
+
+<a href="{{ url_for('map.displaymap') }}" class="button">Refresh Map</a>
+
+  {% endblock content %}
